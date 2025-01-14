@@ -299,10 +299,13 @@ function selectPoint(pointId) {
     pawnsChoiceStarted = false;
   }
   if (captureIsHappening) {
-    console.log(`captureIsHappening`);
     const validChoice = dinamicCaptureOptions.find(option => option === pointId);
     ValidChoice=validChoice;
     if (!validChoice) {
+      return;
+    }
+    if(pawnsOnPoints[validChoice].owner !== currentPlayer) {
+      alert("Не можете да кацате върху противникови пулове");
       return;
     }
 
