@@ -30,6 +30,7 @@ let doubleSkipPossibility = false;
 let pawnsInfoBeforeHighlight = {};
 let pawnsChoiceStarted = false;
 let ValidChoice = null;
+let skippingEnded=false;
 
 const players = {
   1: { color: "blue", remainingPawnsToMove: gameData.pawnsCount, remainingPawns: gameData.pawnsCount, countries: playersCountries[1], capitalsNum: 4 },
@@ -205,9 +206,15 @@ function unhighlightPointsForCapture()
 {
   for (const pointId in pawnsInfoBeforeHighlight) {
     pawnsOnPoints[pointId].owner = pawnsInfoBeforeHighlight[pointId].owner;
-    ///if(pawnsChoiceStarted) {updatePointDisplay(pointId);}
+   if(skippingEnded) {
+    Y=false;
+    console.log("A point has been unhighlighted " + pointId);
+    updatePointDisplay(pointId);
+
+    skippingEnded=false;
+   }
   }
-  pawnsInfoBeforeHighlight = {};
+  
 }
 
 // Обработчик на събития за избиране на точка
@@ -262,8 +269,9 @@ function selectPoint(pointId) {
 
     if (dinamicCaptureOptions.length > 0) {
 
-       resetHighlights();
-       unhighlightPointsForCapture()
+       unhighlightPointsForCapture();
+
+       
 
         highlightConnections(pointId); // Highlight connections for SkipPawns logic
 
@@ -286,7 +294,7 @@ function selectPoint(pointId) {
         return;
       }
 
-    resetHighlights();
+    
     pawnsChoiceStarted = false;
   }
   if (captureIsHappening) {
@@ -351,13 +359,16 @@ function selectPoint(pointId) {
       Y=false;
     }
     else {
+      
       captureIsHappening = false;
       dinamicCaptureOptions = [];
       console.log(`verka`);
+      skippingEnded=true;
+      unhighlightPointsForCapture();
       Y=true;
     }
 
-    unhighlightPointsForCapture();
+    console.log("X=" + X + " and Y=" + Y);
 
     if (X && Y) {
       if (isACapitalBeingAttacked && checkCapitalsOwnership(currentPlayer).underAttack) {
@@ -833,12 +844,12 @@ function updatePointDisplay(pointId) {
       text.setAttribute("font-size", fontSize); // Увеличаване на размера на шрифта
       text.setAttribute("font-weight", fontWeight); // Увеличаване на размера на шрифта
 
-console.log(`verka is here`);
 
       // Use saved pawn count for highlighted points
       const displayCount = pawnsOnPoints[pointId].owner === 'highlight' && pawnsInfoBeforeHighlight[pointId] ?
         pawnsInfoBeforeHighlight[pointId].pawns :
         pawnCount;
+        console.log(`pawnCount: ${pawnCount} on point ${pointId}`);
       text.textContent = displayCount;
       group.appendChild(text);
     }
@@ -916,6 +927,9 @@ function switchTurn() {
     return;
   }
 
+  resetHighlights();
+  unhighlightPointsForCapture();
+  pawnsInfoBeforeHighlight = {};
   currentPlayer = currentPlayer === 1 ? 2 : 1;
   alert(`Сега е ред на ${getCurrentPlayerName()} да мести пуловете си.`);
 
@@ -1019,5 +1033,4 @@ function handleSkipCaptureOption(pointId) {
     }
   }
 }
-
 
