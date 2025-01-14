@@ -571,6 +571,7 @@ function movePawns(startPointId, destinationPointId) {
         if (pawnsOnPoints[startPointId].pawns === 1) {
           pawnsOnPoints[startPointId].owner = currentPlayer;
         }
+        X=false;
         return;
       }
     } else {
