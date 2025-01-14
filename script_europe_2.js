@@ -291,6 +291,7 @@ function selectPoint(pointId) {
         if (pawnsOnPoints[validChoice].pawns === 1) {
           pawnsOnPoints[validChoice].owner = currentPlayer;
         }
+        X = false;
         return;
       }
 
@@ -619,6 +620,7 @@ function movePawns(startPointId, destinationPointId) {
         if (pawnsOnPoints[startPointId].pawns === 1) {
           pawnsOnPoints[startPointId].owner = currentPlayer;
         }
+        X = false;
         return;
       }
     } else {
