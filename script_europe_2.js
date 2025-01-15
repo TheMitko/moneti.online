@@ -304,7 +304,7 @@ function selectPoint(pointId) {
     if (!validChoice) {
       return;
     }
-    if(pawnsOnPoints[validChoice].owner !== currentPlayer) {
+    if(pawnsOnPoints[validChoice].owner !== currentPlayer && pawnsOnPoints[validChoice].pawns !== 0) {
       alert("Не можете да кацате върху противникови пулове");
       return;
     }
